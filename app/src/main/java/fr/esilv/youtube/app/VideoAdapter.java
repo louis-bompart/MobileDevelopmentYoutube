@@ -20,6 +20,10 @@ import java.net.URL;
  */
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> {
 
+    public void setVideos(Videos videos) {
+        this.videos = videos;
+    }
+
     private Videos videos;
 
     public VideoAdapter(Videos videos) {
@@ -29,7 +33,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     @Override
     public VideoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.view_video, parent, false);
+                .inflate(R.layout.items_view, parent, false);
         // set the view's size, margins, padding and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -37,10 +41,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.mName.setText(videos.get(i).getTitle());
-        viewHolder.mId.setText(videos.get(i).getVideoId());
-        LoadImageFromURL loadImageFromURL = new LoadImageFromURL(viewHolder.mThumbnail);
-        loadImageFromURL.execute(videos.get(i).getThumbnail());
+        viewHolder.titre.setText(videos.get(i).getSnippet().getTitle());
+        LoadImageFromURL loadImageFromURL = new LoadImageFromURL(viewHolder.image);
+        loadImageFromURL.execute(videos.get(i).getSnippet().getThumbnail().getMedium().getUrl());
         viewHolder.itemView.setOnClickListener(new OnVideoClick(videos.get(i)));
     }
 
@@ -50,15 +53,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mName;
-        TextView mId;
-        ImageView mThumbnail;
+        private TextView titre;
+        private ImageView image;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mName = (TextView) itemView.findViewById(R.id.video_name);
-            mId = (TextView) itemView.findViewById(R.id.video_id);
-            mThumbnail = (ImageView) itemView.findViewById(R.id.video_th);
+            titre = (TextView) itemView.findViewById(R.id.titre);
+            image = (ImageView) itemView.findViewById(R.id.imageView);
         }
     }
 
